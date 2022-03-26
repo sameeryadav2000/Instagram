@@ -13,10 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.content.FileProvider
-import com.parse.FindCallback
-import com.parse.ParseException
-import com.parse.ParseQuery
-import com.parse.ParseUser
+import com.parse.*
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
@@ -32,7 +29,15 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btnSubmit).setOnClickListener {
             val description = findViewById<EditText>(R.id.description).text.toString()
             val user = ParseUser.getCurrentUser()
-            submitPost(description, user)
+            if (photoFile != null) {
+                submitPost(description, user, photoFile!!)
+            } else {
+                Log.e(TAG, "photoFile is null")
+                Toast.makeText(this, "No photoFile!", Toast.LENGTH_SHORT).show()
+
+
+            }
+
         }
 
         findViewById<Button>(R.id.btnTakePicture).setOnClickListener {
@@ -42,16 +47,18 @@ class MainActivity : AppCompatActivity() {
 //        queryPosts()
     }
 
-    fun submitPost(description: String, user: ParseUser) {
+    fun submitPost(description: String, user: ParseUser, file: File) {
         val post = Post()
         post.setDescription(description)
         post.setUser(user)
+        post.setImage(ParseFile(file))
         post.saveInBackground { exception ->
             if (exception != null) {
                 Log.e(TAG, "Error while saving post")
                 exception.printStackTrace()
             } else {
                 Log.i(TAG, "Successfully saved post")
+                Toast.makeText(this, "Post Succeeded", Toast.LENGTH_SHORT).show()
             }
         }
 //
