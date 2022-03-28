@@ -16,6 +16,7 @@ import androidx.core.content.FileProvider
 import com.parse.*
 import java.io.File
 
+
 class MainActivity : AppCompatActivity() {
 
     val CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034
@@ -35,7 +36,6 @@ class MainActivity : AppCompatActivity() {
                 Log.e(TAG, "photoFile is null")
                 Toast.makeText(this, "No photoFile!", Toast.LENGTH_SHORT).show()
 
-
             }
 
         }
@@ -44,8 +44,20 @@ class MainActivity : AppCompatActivity() {
             onLaunchCamera()
         }
 
+        findViewById<Button>(R.id.btnLogout).setOnClickListener {
+            ParseUser.logOut()
+            goToLoginActivity()
+            Log.i(TAG, "Error")
+        }
+
 //        queryPosts()
     }
+
+    private fun goToLoginActivity() {
+        val intent = Intent(this@MainActivity, LoginActivity::class.java)
+        startActivity(intent)
+    }
+
 
     fun submitPost(description: String, user: ParseUser, file: File) {
         val post = Post()
