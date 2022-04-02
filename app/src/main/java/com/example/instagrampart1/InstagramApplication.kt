@@ -1,6 +1,7 @@
 package com.example.instagrampart1
 
 import android.app.Application
+import android.content.Context
 import com.parse.Parse
 import com.parse.ParseObject
 
@@ -17,4 +18,5 @@ class InstagramApplication : Application() {
                 .server(getString(R.string.back4app_server_url))
                 .build());
     }
+
 }
